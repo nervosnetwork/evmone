@@ -23,6 +23,7 @@ inline constexpr int64_t num_words(uint64_t size_in_bytes) noexcept
 
 inline bool check_memory(ExecutionState& state, const uint256& offset, uint64_t size) noexcept
 {
+    // TODO: redefine max_buffer_size
     if (offset > max_buffer_size)
         return false;
 
