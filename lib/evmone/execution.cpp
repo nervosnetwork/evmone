@@ -23,7 +23,11 @@ evmc_result execute(evmc_vm* /*unused*/, const evmc_host_interface* host, evmc_h
     const auto gas_left =
         (state->status == EVMC_SUCCESS || state->status == EVMC_REVERT) ? state->gas_left : 0;
 
-    return evmc::make_result(
+    evmc_result res_ptr = evmc::make_result(
         state->status, gas_left, &state->memory[state->output_offset], state->output_size);
+    // save used_memory to evmc_result.padding
+    const auto used_memory = state->memory.used_memory();
+    memcpy(res_ptr.padding, &used_memory, sizeof(uint32_t));
+    return res_ptr; 
 }
 }  // namespace evmone

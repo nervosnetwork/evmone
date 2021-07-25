@@ -93,6 +93,11 @@ public:
         return true;
     }
 
+    /// get total used memory (bytes) of m_memory
+    uint32_t used_memory() const noexcept {
+        return static_cast<uint32_t>((used_ptr - m_memory));
+    }
+
     bool resize(size_t new_size) {
         used_ptr = begin + new_size;
 
@@ -107,7 +112,10 @@ public:
         return true;
     }
 
-    void clear() noexcept { used_ptr = begin; }
+    void clear() noexcept {}
+    ~evm_memory() {
+        used_ptr = begin;
+    }
 };
 
 /// Generic execution state for generic instructions implementations.
