@@ -93,15 +93,18 @@ public:
         return true;
     }
 
-    void resize(size_t new_size) {
+    bool resize(size_t new_size) {
         used_ptr = begin + new_size;
 
         // out of bounds
-        if (used_ptr > end) throw std::overflow_error("out-of-memory");
-        // TODO: return EVMC_OUT_OF_MEMORY
+        if (used_ptr > end) {
+            return false;
+            // throw std::overflow_error("out-of-memory");
+        }
 
         // TODO: try to allocate more memory to m_memory
         // and catch OUT_OF_MEMORY error if failed
+        return true;
     }
 
     void clear() noexcept { used_ptr = begin; }
