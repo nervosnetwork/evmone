@@ -59,4 +59,8 @@ EVMC_EXPORT evmc_vm* evmc_create_evmone() noexcept
         evmone::set_option,
     };
 }
+EVMC_EXPORT void init_evm_memory(uint8_t stack_mem[], const size_t len) noexcept
+{
+    evmone::evm_memory::init(stack_mem, len);
+}
 }

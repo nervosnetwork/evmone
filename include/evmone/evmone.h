@@ -13,6 +13,7 @@ extern "C" {
 #endif
 
 EVMC_EXPORT struct evmc_vm* evmc_create_evmone(void) EVMC_NOEXCEPT;
+EVMC_EXPORT void init_evm_memory(uint8_t[], const size_t) EVMC_NOEXCEPT;
 
 #if __cplusplus
 }

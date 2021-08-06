@@ -57,18 +57,23 @@ struct evm_stack
 
 /// The EVM memory.
 ///
-/// Use 512 KB as max_heap_memory_size of evm_memory,
+/// Use 512 KB as max_evm_memory_size of evm_memory,
 /// since there is only 1 MB heap memory to run contracts in CKB VM.
 class evm_memory
 {
-    /// The initial memory allocation.
-    static const size_t max_heap_memory_size = 1024 * 512; // 512K bytes
-    inline static uint8_t m_memory[max_heap_memory_size];
-    static constexpr uint8_t* end = std::end(m_memory);
-    inline static uint8_t* used_ptr = m_memory;
+    inline static uint8_t* m_memory;
+    inline static uint8_t* end;
+    inline static uint8_t* used_ptr;
     uint8_t* begin = nullptr;
 
 public:
+    /// The initial memory allocation
+    static void init(uint8_t stack_mem[], const size_t len) {
+        m_memory = stack_mem;
+        end = m_memory + len;
+        used_ptr = m_memory;
+    }
+
     evm_memory() noexcept {
         begin = used_ptr;
     }
@@ -104,7 +109,6 @@ public:
         // out of bounds
         if (used_ptr > end) {
             return false;
-            // throw std::overflow_error("out-of-memory");
         }
 
         // TODO: try to allocate more memory to m_memory
