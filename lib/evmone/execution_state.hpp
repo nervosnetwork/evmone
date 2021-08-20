@@ -116,9 +116,13 @@ public:
         return true;
     }
 
-    void clear() noexcept {}
-    ~evm_memory() {
+    void clear() noexcept {
+        printf("[evmone.evm_memory] clear()");
+        while (used_ptr-- > begin) *used_ptr = 0;
         used_ptr = begin;
+    }
+    ~evm_memory() {
+        clear();
     }
 };
 
@@ -154,6 +158,7 @@ struct ExecutionState
         const evmc_host_interface& host_interface, evmc_host_context* host_ctx,
         const uint8_t* code_ptr, size_t code_size) noexcept
     {
+        printf("[evmone] ExecutionState::reset");
         gas_left = message.gas;
         stack.clear();
         memory.clear();
