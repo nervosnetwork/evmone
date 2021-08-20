@@ -104,21 +104,25 @@ public:
     }
 
     bool resize(size_t new_size) {
-        used_ptr = begin + new_size;
-
+        uint8_t* new_ptr = begin + new_size;
         // out of bounds
-        if (used_ptr > end) {
+        if (new_ptr > end) {
+            // TODO: try to allocate more memory to m_memory
+            // and catch OUT_OF_MEMORY error if failed
             return false;
         }
 
-        // TODO: try to allocate more memory to m_memory
-        // and catch OUT_OF_MEMORY error if failed
+        // make sure that the new memory is clean
+        memset(used_ptr, 0, new_ptr - used_ptr);
+        used_ptr = new_ptr;
         return true;
     }
 
-    void clear() noexcept {}
-    ~evm_memory() {
+    void clear() noexcept {
         used_ptr = begin;
+    }
+    ~evm_memory() {
+        clear();
     }
 };
 
