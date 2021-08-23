@@ -118,7 +118,7 @@ public:
 
     void clear() noexcept {
         printf("[evmone.evm_memory] clear()");
-        while (used_ptr-- > begin) *used_ptr = 0;
+        memset(begin, 0, used_ptr - begin);
         used_ptr = begin;
     }
     ~evm_memory() {
