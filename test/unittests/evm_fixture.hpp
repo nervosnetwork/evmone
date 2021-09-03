@@ -3,8 +3,8 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
 
+#include "environment.hpp"
 #include <evmc/mocked_host.hpp>
-#include <gtest/gtest.h>
 #include <intx/intx.hpp>
 #include <test/utils/bytecode.hpp>
 
