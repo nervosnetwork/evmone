@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-// The faster version of memset in polyjuice_utils.h
+// The faster version of memset 
 void *fast_memset(void*, int, size_t);
 
 namespace evmone
@@ -64,13 +64,13 @@ struct evm_stack
 /// since there is only 1 MB heap memory to run contracts in CKB VM.
 class evm_memory
 {
-    inline static uint8_t* m_memory;
+    inline static uint8_t* m_memory = nullptr;
     inline static uint8_t* end;
     inline static uint8_t* used_ptr;
     uint8_t* begin = nullptr;
 
 public:
-    /// The initial memory allocation
+    /// The initial memory allocation invoked from run_polyjuice()
     static void init(uint8_t stack_mem[], const size_t len) {
         m_memory = stack_mem;
         end = m_memory + len;
@@ -78,6 +78,13 @@ public:
     }
 
     evm_memory() noexcept {
+        if (nullptr == m_memory) {
+            printf("\n  init evm_memory for unittest \n");
+            m_memory = new uint8_t[257 * 1024];
+            end = m_memory + 257 * 1024;
+            used_ptr = m_memory;
+        }
+
         begin = used_ptr;
     }
 
@@ -116,7 +123,7 @@ public:
         }
 
         // make sure that the new memory is clean
-        fast_memset(used_ptr, 0, new_ptr - used_ptr);
+        fast_memset(used_ptr, 0, static_cast<size_t>(new_ptr - used_ptr));
         used_ptr = new_ptr;
         return true;
     }
