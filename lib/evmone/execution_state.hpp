@@ -70,7 +70,7 @@ class evm_memory
     uint8_t* begin = nullptr;
 
 public:
-    /// The initial memory allocation invoked from run_polyjuice()
+    /// The initial memory allocation invoked before execute any evmone instance.
     static void init(uint8_t stack_mem[], const size_t len) {
         m_memory = stack_mem;
         end = m_memory + len;
